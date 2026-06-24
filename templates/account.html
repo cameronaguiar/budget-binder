@@ -21,13 +21,6 @@ Total:
         placeholder="Category"
         required>
 
-    <input
-        type="number"
-        step="0.01"
-        name="balance"
-        placeholder="Starting Amount"
-        required>
-
     <button type="submit">Add</button>
 
 </form>
@@ -41,8 +34,15 @@ Total:
     <h3>{{ category.name }}</h3>
 
     <p>
-        {{ account.currency }}
-        {{ "%.2f"|format(category.balance) }}
+        {% set cat_total = namespace(value=0) %}
+
+        {% for t in transactions %}
+            {% if t.category_id == category.id %}
+                {% set cat_total.value = cat_total.value + t.amount %}
+            {% endif %}
+        {% endfor %}
+
+        {{ account.currency }} {{ "%.2f"|format(cat_total.value) }}
     </p>
 
 </a>
