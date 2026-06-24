@@ -76,14 +76,10 @@ def create_account():
     name = request.form["name"]
     currency = request.form["currency"]
 
-    conn = db()
-
-    conn.execute(
-        "INSERT INTO accounts(name,currency) VALUES(?,?)",
-        (name,currency)
-    )
-
-    conn.commit()
+    supabase.table("accounts").insert({
+        "name": name,
+        "currency": currency
+    }).execute()
 
     return redirect("/")
 
