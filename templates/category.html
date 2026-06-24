@@ -2,28 +2,21 @@
 
 {% block content %}
 
-<a href="/account/{{ account_id }}">
-← Back to Categories
-</a>
+<a href="/account/{{ account_id }}">← Back to Account</a>
 
 <h1>{{ category.name }}</h1>
 
-<form action="/rename-category/{{ category.id }}" method="post">
-
-    <input
-        name="name"
-        value="{{ category.name }}"
-        required>
-
-    <button type="submit">
-        Rename Category
-    </button>
-
-</form>
+<hr>
 
 <h2>
-Current Balance:
-{{ "%.2f"|format(category.balance) }}
+Current Total:
+{% set total = namespace(value=category.starting_balance) %}
+
+{% for t in transactions %}
+    {% set total.value = total.value + t.amount %}
+{% endfor %}
+
+{{ "%.2f"|format(total.value) }}
 </h2>
 
 <hr>
@@ -44,10 +37,10 @@ Current Balance:
         type="number"
         step="0.01"
         name="amount"
-        placeholder="-48.50 or 100.00"
+        placeholder="Amount (e.g. -50 or 100)"
         required>
 
-    <button type="submit">Save</button>
+    <button type="submit">Add Transaction</button>
 
 </form>
 
@@ -57,19 +50,15 @@ Current Balance:
 
 <div class="transaction">
 
-    <p>{{ t.date }}</p>
-
+    <p><strong>{{ t.date }}</strong></p>
     <p>{{ t.description }}</p>
-
     <p>{{ "%.2f"|format(t.amount) }}</p>
-
-    <p>Balance: {{ "%.2f"|format(t.balance_after) }}</p>
 
 </div>
 
 {% else %}
 
-<p>No transactions yet.</p>
+<p>No transactions yet. Add your first one above.</p>
 
 {% endfor %}
 

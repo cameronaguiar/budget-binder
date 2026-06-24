@@ -34,15 +34,15 @@ Total:
     <h3>{{ category.name }}</h3>
 
     <p>
-        {% set cat_total = namespace(value=0) %}
+        {% set cat_total = namespace(value=category.starting_balance) %}
 
-        {% for t in transactions %}
-            {% if t.category_id == category.id %}
-                {% set cat_total.value = cat_total.value + t.amount %}
-            {% endif %}
-        {% endfor %}
+{% for t in transactions %}
+    {% if t.category_id == category.id %}
+        {% set cat_total.value = cat_total.value + t.amount %}
+    {% endif %}
+{% endfor %}
 
-        {{ account.currency }} {{ "%.2f"|format(cat_total.value) }}
+{{ account.currency }} {{ "%.2f"|format(cat_total.value) }}
     </p>
 
 </a>

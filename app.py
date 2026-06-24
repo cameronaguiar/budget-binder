@@ -62,14 +62,14 @@ def account(id):
         .execute().data
 
     categories = supabase.table("categories") \
-        .select("*") \
-        .eq("account_id", id) \
-        .execute().data
+    .select("*") \
+    .eq("account_id", id) \
+    .execute().data
 
     transactions = supabase.table("transactions") \
-        .select("*") \
-        .eq("account_id", id) \
-        .execute().data
+    .select("*") \
+    .eq("account_id", id) \
+    .execute().data
 
     total = sum(t["amount"] for t in transactions)
 
@@ -89,10 +89,12 @@ def account(id):
 def add_category(account_id):
 
     name = request.form["name"]
+    starting_balance = float(request.form["balance"])
 
     supabase.table("categories").insert({
         "account_id": account_id,
-        "name": name
+        "name": name,
+        "starting_balance": starting_balance
     }).execute()
 
     return redirect(f"/account/{account_id}")
