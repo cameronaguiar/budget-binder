@@ -68,21 +68,26 @@ def account(id):
         .eq("account_id", id) \
         .execute().data
 
-    # -----------------------------
-    # FIXED TOTAL (starting_balance + transactions)
-    # -----------------------------
-    total = sum(
-        (c.get("starting_balance", 0) +
-         sum(t["amount"] for t in transactions if t["category_id"] == c["id"]))
-        for c in categories
-    )
+    # Build live category totals
+    for c in categories:
+        starting = c.get("starting_balance", 0)
+
+        total = starting + sum(
+            t["amount"]
+            for t in transactions
+            if t["category_id"] == c["id"]
+        )
+
+        c["total"] = total
+
+    # Account total (optional but consistent)
+    account_total = sum(c["total"] for c in categories)
 
     return render_template(
         "account.html",
         account=account,
         categories=categories,
-        transactions=transactions,
-        total=total
+        total=account_total
     )
 
 # -----------------------------

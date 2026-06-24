@@ -41,8 +41,7 @@ Total:
     <h3>{{ category.name }}</h3>
 
     <p>
-        {{ account.currency }}
-        {{ "%.2f"|format(category.starting_balance) }}
+        {{ account.currency }} {{ "%.2f"|format(category.total) }}
     </p>
 
 </a>
