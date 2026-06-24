@@ -77,6 +77,7 @@ def account(id):
         "account.html",
         account=account,
         categories=categories,
+        transactions=transactions,
         total=total
     )
 
