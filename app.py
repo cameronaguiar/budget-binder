@@ -15,7 +15,6 @@ key = os.getenv("SUPABASE_KEY")
 
 supabase = create_client(url, key)
 
-
 # -----------------------------
 # Dashboard (Accounts list)
 # -----------------------------
@@ -30,7 +29,6 @@ def dashboard():
         "dashboard.html",
         accounts=accounts
     )
-
 
 # -----------------------------
 # Create Account
@@ -48,7 +46,6 @@ def create_account():
 
     return redirect("/")
 
-
 # -----------------------------
 # Account Page (categories + total)
 # -----------------------------
@@ -62,16 +59,23 @@ def account(id):
         .execute().data
 
     categories = supabase.table("categories") \
-    .select("*") \
-    .eq("account_id", id) \
-    .execute().data
+        .select("*") \
+        .eq("account_id", id) \
+        .execute().data
 
     transactions = supabase.table("transactions") \
-    .select("*") \
-    .eq("account_id", id) \
-    .execute().data
+        .select("*") \
+        .eq("account_id", id) \
+        .execute().data
 
-    total = sum(t["amount"] for t in transactions)
+    # -----------------------------
+    # FIXED TOTAL (starting_balance + transactions)
+    # -----------------------------
+    total = sum(
+        (c.get("starting_balance", 0) +
+         sum(t["amount"] for t in transactions if t["category_id"] == c["id"]))
+        for c in categories
+    )
 
     return render_template(
         "account.html",
@@ -80,7 +84,6 @@ def account(id):
         transactions=transactions,
         total=total
     )
-
 
 # -----------------------------
 # Add Category
@@ -98,7 +101,6 @@ def add_category(account_id):
     }).execute()
 
     return redirect(f"/account/{account_id}")
-
 
 # -----------------------------
 # Category Page
@@ -124,7 +126,6 @@ def category(id):
         transactions=transactions,
         account_id=category["account_id"]
     )
-
 
 # -----------------------------
 # Add Transaction
@@ -152,7 +153,6 @@ def add_transaction(category_id):
 
     return redirect(f"/category/{category_id}")
 
-
 # -----------------------------
 # Rename Category
 # -----------------------------
@@ -167,7 +167,6 @@ def rename_category(id):
         .execute()
 
     return redirect(f"/category/{id}")
-
 
 # -----------------------------
 # Run App
