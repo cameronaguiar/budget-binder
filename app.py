@@ -1,55 +1,13 @@
 from flask import Flask, render_template, request, redirect
-import sqlite3
-from datetime import datetime
-
-app = Flask(__name__)
-
-DB = "budget.db"
-
-def db():
-    conn = sqlite3.connect(DB)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
-def init_db():
-
-    conn = db()
-
-    conn.execute("""
-    CREATE TABLE IF NOT EXISTS accounts(
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        currency TEXT
-    )
-    """)
-
-    conn.execute("""
-    CREATE TABLE IF NOT EXISTS categories(
-        id INTEGER PRIMARY KEY,
-        account_id INTEGER,
-        name TEXT,
-        balance REAL
-    )
-    """)
-
-    conn.execute("""
-    CREATE TABLE IF NOT EXISTS transactions(
-        id INTEGER PRIMARY KEY,
-        category_id INTEGER,
-        date TEXT,
-        description TEXT,
-        amount REAL,
-        balance_after REAL
-    )
-    """)
-
-    conn.commit()
-
 import os
 from dotenv import load_dotenv
 from supabase import create_client
 
+app = Flask(__name__)
+
+# -----------------------------
+# Supabase Setup
+# -----------------------------
 load_dotenv()
 
 url = os.getenv("SUPABASE_URL")
@@ -57,12 +15,16 @@ key = os.getenv("SUPABASE_KEY")
 
 supabase = create_client(url, key)
 
+
+# -----------------------------
+# Dashboard (Accounts list)
+# -----------------------------
 @app.route("/")
 def dashboard():
 
-    accounts_response = supabase.table("accounts").select("*").execute()
-
-    accounts = accounts_response.data
+    accounts = supabase.table("accounts") \
+        .select("*") \
+        .execute().data
 
     return render_template(
         "dashboard.html",
@@ -70,6 +32,9 @@ def dashboard():
     )
 
 
+# -----------------------------
+# Create Account
+# -----------------------------
 @app.route("/create-account", methods=["POST"])
 def create_account():
 
@@ -84,22 +49,29 @@ def create_account():
     return redirect("/")
 
 
+# -----------------------------
+# Account Page (categories + total)
+# -----------------------------
 @app.route("/account/<int:id>")
 def account(id):
 
-    conn = db()
+    account = supabase.table("accounts") \
+        .select("*") \
+        .eq("id", id) \
+        .single() \
+        .execute().data
 
-    account = conn.execute(
-        "SELECT * FROM accounts WHERE id=?",
-        (id,)
-    ).fetchone()
+    categories = supabase.table("categories") \
+        .select("*") \
+        .eq("account_id", id) \
+        .execute().data
 
-    categories = conn.execute(
-        "SELECT * FROM categories WHERE account_id=?",
-        (id,)
-    ).fetchall()
+    transactions = supabase.table("transactions") \
+        .select("*") \
+        .eq("account_id", id) \
+        .execute().data
 
-    total = sum(c["balance"] for c in categories)
+    total = sum(t["amount"] for t in transactions)
 
     return render_template(
         "account.html",
@@ -109,68 +81,51 @@ def account(id):
     )
 
 
+# -----------------------------
+# Add Category
+# -----------------------------
 @app.route("/add-category/<int:account_id>", methods=["POST"])
 def add_category(account_id):
 
     name = request.form["name"]
-    balance = float(request.form["balance"])
 
-    conn = db()
-
-    conn.execute(
-        """
-        INSERT INTO categories(
-            account_id,
-            name,
-            balance
-        )
-        VALUES(?,?,?)
-        """,
-        (account_id,name,balance)
-    )
-
-    conn.commit()
+    supabase.table("categories").insert({
+        "account_id": account_id,
+        "name": name
+    }).execute()
 
     return redirect(f"/account/{account_id}")
 
 
+# -----------------------------
+# Category Page
+# -----------------------------
 @app.route("/category/<int:id>")
 def category(id):
 
-    conn = db()
+    category = supabase.table("categories") \
+        .select("*") \
+        .eq("id", id) \
+        .single() \
+        .execute().data
 
-    category = conn.execute(
-        "SELECT * FROM categories WHERE id=?",
-        (id,)
-    ).fetchone()
-
-    transactions = conn.execute(
-        """
-        SELECT *
-        FROM transactions
-        WHERE category_id=?
-        ORDER BY date DESC,id DESC
-        """,
-        (id,)
-    ).fetchall()
-
-    account_id = conn.execute(
-    """
-    SELECT account_id
-    FROM categories
-    WHERE id=?
-    """,
-    (id,)
-).fetchone()["account_id"]
+    transactions = supabase.table("transactions") \
+        .select("*") \
+        .eq("category_id", id) \
+        .order("id", desc=True) \
+        .execute().data
 
     return render_template(
         "category.html",
         category=category,
         transactions=transactions,
-        account_id=account_id
+        account_id=category["account_id"]
     )
 
 
+# -----------------------------
+# Add Transaction
+# -----------------------------
 @app.route("/add-transaction/<int:category_id>", methods=["POST"])
 def add_transaction(category_id):
 
@@ -178,67 +133,41 @@ def add_transaction(category_id):
     description = request.form["description"]
     date = request.form["date"]
 
-    conn = db()
+    category = supabase.table("categories") \
+        .select("*") \
+        .eq("id", category_id) \
+        .single() \
+        .execute().data
 
-    category = conn.execute(
-        "SELECT * FROM categories WHERE id=?",
-        (category_id,)
-    ).fetchone()
-
-    new_balance = category["balance"] + amount
-
-    conn.execute(
-        """
-        UPDATE categories
-        SET balance=?
-        WHERE id=?
-        """,
-        (new_balance,category_id)
-    )
-
-    conn.execute(
-        """
-        INSERT INTO transactions(
-            category_id,
-            date,
-            description,
-            amount,
-            balance_after
-        )
-        VALUES(?,?,?,?,?)
-        """,
-        (
-            category_id,
-            date,
-            description,
-            amount,
-            new_balance
-        )
-    )
-
-    conn.commit()
+    supabase.table("transactions").insert({
+        "category_id": category_id,
+        "account_id": category["account_id"],
+        "date": date,
+        "description": description,
+        "amount": amount
+    }).execute()
 
     return redirect(f"/category/{category_id}")
 
+
+# -----------------------------
+# Rename Category
+# -----------------------------
 @app.route("/rename-category/<int:id>", methods=["POST"])
 def rename_category(id):
 
     new_name = request.form["name"]
 
-    conn = db()
-
-    conn.execute(
-        """
-        UPDATE categories
-        SET name=?
-        WHERE id=?
-        """,
-        (new_name,id)
-    )
-
-    conn.commit()
+    supabase.table("categories") \
+        .update({"name": new_name}) \
+        .eq("id", id) \
+        .execute()
 
     return redirect(f"/category/{id}")
 
+
+# -----------------------------
+# Run App
+# -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)

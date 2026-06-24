@@ -2,50 +2,52 @@
 
 {% block content %}
 
-<a href="/account/{{account_id}}">
+<a href="/account/{{ account_id }}">
 ← Back to Categories
 </a>
 
-<h1>{{category.name}}</h1>
+<h1>{{ category.name }}</h1>
 
-<form
-action="/rename-category/{{category.id}}"
-method="post">
+<form action="/rename-category/{{ category.id }}" method="post">
 
-<input
-name="name"
-value="{{category.name}}">
+    <input
+        name="name"
+        value="{{ category.name }}"
+        required>
 
-<button>
-Rename Category
-</button>
+    <button type="submit">
+        Rename Category
+    </button>
 
 </form>
 
 <h2>
 Current Balance:
-{{"%.2f"|format(category.balance)}}
+{{ "%.2f"|format(category.balance) }}
 </h2>
 
-<form
-action="/add-transaction/{{category.id}}"
-method="post">
+<hr>
 
-<input
-type="date"
-name="date">
+<form action="/add-transaction/{{ category.id }}" method="post">
 
-<input
-name="description"
-placeholder="Description">
+    <input
+        type="date"
+        name="date"
+        required>
 
-<input
-type="number"
-step="0.01"
-name="amount"
-placeholder="-48.50 or 100.00">
+    <input
+        name="description"
+        placeholder="Description"
+        required>
 
-<button>Save</button>
+    <input
+        type="number"
+        step="0.01"
+        name="amount"
+        placeholder="-48.50 or 100.00"
+        required>
+
+    <button type="submit">Save</button>
 
 </form>
 
@@ -55,15 +57,19 @@ placeholder="-48.50 or 100.00">
 
 <div class="transaction">
 
-<p>{{t.date}}</p>
+    <p>{{ t.date }}</p>
 
-<p>{{t.description}}</p>
+    <p>{{ t.description }}</p>
 
-<p>{{t.amount}}</p>
+    <p>{{ "%.2f"|format(t.amount) }}</p>
 
-<p>Balance: {{t.balance_after}}</p>
+    <p>Balance: {{ "%.2f"|format(t.balance_after) }}</p>
 
 </div>
+
+{% else %}
+
+<p>No transactions yet.</p>
 
 {% endfor %}
 

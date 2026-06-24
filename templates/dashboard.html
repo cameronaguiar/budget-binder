@@ -6,32 +6,38 @@
 
 <form action="/create-account" method="post">
 
-<input
-name="name"
-placeholder="Account Name">
+    <input
+        name="name"
+        placeholder="Account Name"
+        required>
 
-<select name="currency">
-<option value="$">USD</option>
-<option value="€">EUR</option>
-</select>
+    <select name="currency" required>
+        <option value="$">USD</option>
+        <option value="€">EUR</option>
+    </select>
 
-<button>Create</button>
+    <button type="submit">Create</button>
 
 </form>
 
+<hr>
+
 {% for account in accounts %}
 
-<a class="card"
-href="/account/{{account.id}}">
+<a class="card" href="/account/{{ account.id }}">
 
-<h2>{{account.name}}</h2>
+    <h2>{{ account.name }}</h2>
 
-<p>
-{{account.currency}}
-{{"%.2f"|format(account.total_balance)}}
+    <p>
+    {{ account.currency }}
+    Total: {{ "%.2f"|format(total) }}
 </p>
 
 </a>
+
+{% else %}
+
+<p>No accounts yet. Create your first one above.</p>
 
 {% endfor %}
 

@@ -1,48 +1,55 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <a href="/">← Back to Accounts</a>
 
-<h1>{{account.name}}</h1>
+<h1>{{ account.name }}</h1>
 
 <h2>
 Total:
-{{account.currency}}
-{{"%.2f"|format(total)}}
+{{ account.currency }}
+{{ "%.2f"|format(total) }}
 </h2>
 
-<form
-action="/add-category/{{account.id}}"
-method="post">
+<hr>
 
-<input
-name="name"
-placeholder="Category">
+<form action="/add-category/{{ account.id }}" method="post">
 
-<input
-type="number"
-step="0.01"
-name="balance"
-placeholder="Starting Amount">
+    <input
+        name="name"
+        placeholder="Category"
+        required>
 
-<button>Add</button>
+    <input
+        type="number"
+        step="0.01"
+        name="balance"
+        placeholder="Starting Amount"
+        required>
+
+    <button type="submit">Add</button>
 
 </form>
 
+<hr>
+
 {% for category in categories %}
 
-<a
-class="card"
-href="/category/{{category.id}}">
+<a class="card" href="/category/{{ category.id }}">
 
-<h3>{{category.name}}</h3>
+    <h3>{{ category.name }}</h3>
 
-<p>
-{{account.currency}}
-{{"%.2f"|format(category.balance)}}
-</p>
+    <p>
+        {{ account.currency }}
+        {{ "%.2f"|format(category.balance) }}
+    </p>
 
 </a>
+
+{% else %}
+
+<p>No categories yet. Add your first one above.</p>
 
 {% endfor %}
 
