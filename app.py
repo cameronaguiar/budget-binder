@@ -60,17 +60,9 @@ supabase = create_client(url, key)
 @app.route("/")
 def dashboard():
 
-    conn = db()
+    accounts_response = supabase.table("accounts").select("*").execute()
 
-    accounts = conn.execute("""
-SELECT
-    a.*,
-    COALESCE(SUM(c.balance),0) as total_balance
-FROM accounts a
-LEFT JOIN categories c
-ON a.id = c.account_id
-GROUP BY a.id
-""").fetchall()
+    accounts = accounts_response.data
 
     return render_template(
         "dashboard.html",
@@ -253,5 +245,4 @@ def rename_category(id):
     return redirect(f"/category/{id}")
 
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
