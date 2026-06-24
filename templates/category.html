@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="/account/{{account_id}}">
+← Back to Categories
+</a>
+
+<h1>{{category.name}}</h1>
+
+<form
+action="/rename-category/{{category.id}}"
+method="post">
+
+<input
+name="name"
+value="{{category.name}}">
+
+<button>
+Rename Category
+</button>
+
+</form>
+
+<h2>
+Current Balance:
+{{"%.2f"|format(category.balance)}}
+</h2>
+
+<form
+action="/add-transaction/{{category.id}}"
+method="post">
+
+<input
+type="date"
+name="date">
+
+<input
+name="description"
+placeholder="Description">
+
+<input
+type="number"
+step="0.01"
+name="amount"
+placeholder="-48.50 or 100.00">
+
+<button>Save</button>
+
+</form>
+
+<hr>
+
+{% for t in transactions %}
+
+<div class="transaction">
+
+<p>{{t.date}}</p>
+
+<p>{{t.description}}</p>
+
+<p>{{t.amount}}</p>
+
+<p>Balance: {{t.balance_after}}</p>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Budget Binder</h1>
+
+<form action="/create-account" method="post">
+
+<input
+name="name"
+placeholder="Account Name">
+
+<select name="currency">
+<option value="$">USD</option>
+<option value="€">EUR</option>
+</select>
+
+<button>Create</button>
+
+</form>
+
+{% for account in accounts %}
+
+<a class="card"
+href="/account/{{account.id}}">
+
+<h2>{{account.name}}</h2>
+
+<p>
+{{account.currency}}
+{{"%.2f"|format(account.total_balance)}}
+</p>
+
+</a>
+
+{% endfor %}
+
+{% endblock %}
