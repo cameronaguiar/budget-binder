@@ -241,7 +241,7 @@ def category(id):
     transactions = supabase.table("transactions") \
         .select("*") \
         .eq("category_id", id) \
-        .order("id", desc=True) \
+        .order("date", desc=True) \
         .execute().data
 
     return render_template(
@@ -278,6 +278,52 @@ def add_transaction(category_id):
 
     return redirect(f"/category/{category_id}")
 
+# -----------------------------
+# Delete Transaction
+# -----------------------------
+@app.route("/delete-transaction/<int:id>", methods=["POST"])
+def delete_transaction(id):
+
+    transaction = supabase.table("transactions") \
+        .select("*") \
+        .eq("id", id) \
+        .single() \
+        .execute().data
+
+    category_id = transaction["category_id"]
+
+    supabase.table("transactions") \
+        .delete() \
+        .eq("id", id) \
+        .execute()
+
+    return redirect(f"/category/{category_id}")
+
+
+# -----------------------------
+# Edit Transaction
+# -----------------------------
+@app.route("/edit-transaction/<int:id>", methods=["POST"])
+def edit_transaction(id):
+
+    transaction = supabase.table("transactions") \
+        .select("*") \
+        .eq("id", id) \
+        .single() \
+        .execute().data
+
+    category_id = transaction["category_id"]
+
+    supabase.table("transactions") \
+        .update({
+            "date": request.form["date"],
+            "description": request.form["description"],
+            "amount": float(request.form["amount"])
+        }) \
+        .eq("id", id) \
+        .execute()
+
+    return redirect(f"/category/{category_id}")
 
 # -----------------------------
 # Rename Category
