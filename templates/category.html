@@ -8,15 +8,22 @@
 
 <hr>
 
+<h3>
+    Starting Balance:
+    {{ "%.2f"|format(category.starting_balance) }}
+</h3>
+
 <h2>
-Current Total:
-{% set total = namespace(value=category.starting_balance) %}
 
-{% for t in transactions %}
-    {% set total.value = total.value + t.amount %}
-{% endfor %}
+    {% set total = namespace(value=category.starting_balance) %}
 
-{{ "%.2f"|format(total.value) }}
+    {% for t in transactions %}
+        {% set total.value = total.value + t.amount %}
+    {% endfor %}
+
+    Current Total:
+    {{ "%.2f"|format(total.value) }}
+
 </h2>
 
 <hr>
@@ -37,10 +44,12 @@ Current Total:
         type="number"
         step="0.01"
         name="amount"
-        placeholder="Amount (e.g. -50 or 100)"
+        placeholder="Amount (example: -50.00 or 100.00)"
         required>
 
-    <button type="submit">Add Transaction</button>
+    <button type="submit">
+        Add Transaction
+    </button>
 
 </form>
 
@@ -50,15 +59,21 @@ Current Total:
 
 <div class="transaction">
 
-    <p><strong>{{ t.date }}</strong></p>
+    <p>
+        <strong>{{ t.date }}</strong>
+    </p>
+
     <p>{{ t.description }}</p>
-    <p>{{ "%.2f"|format(t.amount) }}</p>
+
+    <p>
+        {{ "%.2f"|format(t.amount) }}
+    </p>
 
 </div>
 
 {% else %}
 
-<p>No transactions yet. Add your first one above.</p>
+<p>No transactions yet. Add your first transaction above.</p>
 
 {% endfor %}
 

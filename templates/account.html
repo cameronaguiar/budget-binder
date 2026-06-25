@@ -7,9 +7,9 @@
 <h1>{{ account.name }}</h1>
 
 <h2>
-Total:
-{{ account.currency }}
-{{ "%.2f"|format(total) }}
+    Total Balance:
+    {{ account.currency }}
+    {{ "%.2f"|format(total) }}
 </h2>
 
 <hr>
@@ -18,7 +18,7 @@ Total:
 
     <input
         name="name"
-        placeholder="Category"
+        placeholder="Category Name"
         required>
 
     <input
@@ -28,7 +28,9 @@ Total:
         placeholder="Starting Balance"
         required>
 
-    <button type="submit">Add</button>
+    <button type="submit">
+        Add Category
+    </button>
 
 </form>
 
@@ -36,19 +38,22 @@ Total:
 
 {% for category in categories %}
 
-<a class="card" href="/category/{{ category.id }}">
+<a
+    class="card"
+    href="/category/{{ category.id }}">
 
     <h3>{{ category.name }}</h3>
 
     <p>
-        {{ account.currency }} {{ "%.2f"|format(category.total) }}
+        {{ account.currency }}
+        {{ "%.2f"|format(category.total) }}
     </p>
 
 </a>
 
 {% else %}
 
-<p>No categories yet. Add your first one above.</p>
+<p>No categories yet. Add your first category above.</p>
 
 {% endfor %}
 
