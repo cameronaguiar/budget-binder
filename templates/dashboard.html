@@ -4,6 +4,10 @@
 
 <h1>Budget Binder</h1>
 
+<p>
+    <a href="/logout">Logout</a>
+</p>
+
 <form action="/create-account" method="post">
 
     <input
@@ -16,7 +20,9 @@
         <option value="€">EUR</option>
     </select>
 
-    <button type="submit">Create</button>
+    <button type="submit">
+        Create
+    </button>
 
 </form>
 
@@ -24,34 +30,16 @@
 
 {% for account in accounts %}
 
-<a class="card" href="/account/{{ account.id }}">
+<a
+    class="card"
+    href="/account/{{ account.id }}">
 
     <h2>{{ account.name }}</h2>
 
     <p>
-    {{ account.currency }}
-    {% for category in categories %}
-
-<a class="card" href="/category/{{category.id}}">
-
-    <h3>{{category.name}}</h3>
-
-    <p>
-        {% set cat_total = namespace(value=0) %}
-
-        {% for t in transactions %}
-            {% if t.category_id == category.id %}
-                {% set cat_total.value = cat_total.value + t.amount %}
-            {% endif %}
-        {% endfor %}
-
-        {{ account.currency }} {{ "%.2f"|format(cat_total.value) }}
+        {{ account.currency }}
+        {{ "%.2f"|format(account.total) }}
     </p>
-
-</a>
-
-{% endfor %}
-</p>
 
 </a>
 
