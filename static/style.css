@@ -199,3 +199,12 @@ width:400px;
 max-width:90%;
 
 }
+
+.transaction-actions form {
+
+background:none;
+padding:0;
+margin:0;
+border-radius:0;
+
+}
