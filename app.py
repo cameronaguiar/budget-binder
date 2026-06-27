@@ -158,7 +158,7 @@ def create_account():
         "currency": currency
     }).execute()
 
-    return redirect("/")
+    return redirect("/dashboard")
 
 
 # -----------------------------
