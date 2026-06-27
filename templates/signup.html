@@ -1,32 +1,159 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}
+Sign Up | Budget Binder
+{% endblock %}
 
 {% block content %}
 
-<h1>Create Account</h1>
+<header class="site-header">
 
-<form action="/signup" method="post">
+    <div class="logo">
 
-    <input
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        required>
+        <a href="/" class="logo-link">
 
-    <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        required>
+            Budget Binder
 
-    <button type="submit">
-        Create Account
-    </button>
+        </a>
 
-</form>
+    </div>
 
-<p>
-    Already have an account?
-    <a href="/login">Log In</a>
-</p>
+    <nav class="nav-links">
+
+        <a href="/#about">
+
+            About
+
+        </a>
+
+        <a href="/#how-it-works">
+
+            How It Works
+
+        </a>
+
+        <a href="/#pricing">
+
+            Pricing
+
+        </a>
+
+    </nav>
+
+    <div class="header-buttons">
+
+        <a
+            href="/login"
+            class="login-link">
+
+            Log In
+
+        </a>
+
+        <a
+            href="/signup"
+            class="signup-button active-button">
+
+            Sign Up
+
+        </a>
+
+    </div>
+
+</header>
+
+<section class="auth-section">
+
+    <div class="auth-card">
+
+        <h1>
+
+            Create Your Account
+
+        </h1>
+
+        <p>
+
+            Start organizing your finances beautifully.
+
+        </p>
+
+        {% if error %}
+
+        <div class="error-box">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+        <form
+            action="/signup"
+            method="POST">
+
+            <label>
+
+                Email
+
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                required>
+
+            <label>
+
+                Password
+
+            </label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Minimum 6 characters"
+                minlength="6"
+                required>
+
+            <label>
+
+                Confirm Password
+
+            </label>
+
+            <input
+                type="password"
+                name="confirm_password"
+                placeholder="Re-enter your password"
+                minlength="6"
+                required>
+
+            <button
+                type="submit"
+                class="primary-button">
+
+                Create Account
+
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+
+            Already have an account?
+
+            <a href="/login">
+
+                Log In
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
 
 {% endblock %}

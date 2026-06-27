@@ -40,6 +40,10 @@ def signup():
 
     email = request.form["email"]
     password = request.form["password"]
+    confirm_password = request.form["confirm_password"]
+
+    if password != confirm_password:
+        return render_template("signup.html", error="Passwords do not match")
 
     try:
         supabase.auth.sign_up({
@@ -50,7 +54,7 @@ def signup():
         return redirect("/login")
 
     except Exception as e:
-        return str(e)
+        return render_template("signup.html", error=str(e))
 
 
 # -----------------------------
@@ -70,10 +74,10 @@ def login():
 
         session["user_id"] = result.user.id
 
-        return redirect("/")
+        return redirect("/dashboard")
 
     except Exception as e:
-        return str(e)
+        return render_template("login.html", error="Invalid credentials")
 
 
 # -----------------------------
@@ -90,7 +94,7 @@ def logout():
 # -----------------------------
 # Dashboard (Accounts List)
 # -----------------------------
-@app.route("/")
+@app.route("/dashboard")
 def dashboard():
 
     if "user_id" not in session:
@@ -118,10 +122,7 @@ def dashboard():
         account_total = 0
 
         for category in categories:
-
-            category_total = float(
-                category.get("starting_balance", 0)
-            )
+            category_total = float(category.get("starting_balance", 0))
 
             for t in transactions:
                 if t["category_id"] == category["id"]:
@@ -131,11 +132,7 @@ def dashboard():
 
         account["total"] = account_total
 
-    return render_template(
-        "dashboard.html",
-        accounts=accounts
-    )
-
+    return render_template("dashboard.html", accounts=accounts)
 
 # -----------------------------
 # Create Account
@@ -244,10 +241,17 @@ def category(id):
         .order("date", desc=True) \
         .execute().data
 
+    account = supabase.table("accounts") \
+        .select("*") \
+        .eq("id", category["account_id"]) \
+        .single() \
+        .execute().data
+
     return render_template(
         "category.html",
         category=category,
         transactions=transactions,
+        account=account,
         account_id=category["account_id"]
     )
 
@@ -303,7 +307,7 @@ def delete_transaction(id):
 # -----------------------------
 # Edit Transaction
 # -----------------------------
-@app.route("/edit-transaction/<int:id>", methods=["POST"])
+@app.route("/edit-transaction/<int:id>", methods=["GET", "POST"])
 def edit_transaction(id):
 
     transaction = supabase.table("transactions") \
@@ -314,16 +318,20 @@ def edit_transaction(id):
 
     category_id = transaction["category_id"]
 
-    supabase.table("transactions") \
-        .update({
-            "date": request.form["date"],
-            "description": request.form["description"],
-            "amount": float(request.form["amount"])
-        }) \
-        .eq("id", id) \
-        .execute()
+    if request.method == "POST":
 
-    return redirect(f"/category/{category_id}")
+        supabase.table("transactions") \
+            .update({
+                "date": request.form["date"],
+                "description": request.form["description"],
+                "amount": float(request.form["amount"])
+            }) \
+            .eq("id", id) \
+            .execute()
+
+        return redirect(f"/category/{category_id}")
+
+    return render_template("edit_transaction.html", transaction=transaction)
 
 # -----------------------------
 # Rename Category

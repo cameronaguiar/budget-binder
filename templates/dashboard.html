@@ -1,52 +1,199 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | Budget Binder
+{% endblock %}
 
 {% block content %}
 
-<h1>Online Budget Binder</h1>
+<div class="container">
 
-<p>
-    <a href="/logout">Logout</a>
-</p>
+    <header class="app-header">
 
-<form action="/create-account" method="post">
+        <div>
 
-    <input
-        name="name"
-        placeholder="Account Name"
-        required>
+            <h1 class="page-title">
 
-    <select name="currency" required>
-        <option value="$">USD</option>
-        <option value="€">EUR</option>
-    </select>
+                My Budget Binder
 
-    <button type="submit">
-        Create
-    </button>
+            </h1>
 
-</form>
+            <p class="page-subtitle">
 
-<hr>
+                Organize every account beautifully.
 
-{% for account in accounts %}
+            </p>
 
-<a
-    class="card"
-    href="/account/{{ account.id }}">
+        </div>
 
-    <h2>{{ account.name }}</h2>
+        <a
+            href="/logout"
+            class="logout-button">
 
-    <p>
-        {{ account.currency }}
-        {{ "%.2f"|format(account.total) }}
-    </p>
+            Log Out
 
-</a>
+        </a>
 
-{% else %}
+    </header>
 
-<p>No accounts yet. Create your first one above.</p>
+    <form
+        action="/create-account"
+        method="post">
 
-{% endfor %}
+        <h2
+            style="margin-bottom:25px; font-family:'Cormorant Garamond',serif; font-size:40px;">
+
+            Create New Account
+
+        </h2>
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Account Name"
+            required>
+
+        <select
+            name="currency"
+            required>
+
+            <option value="" disabled selected>
+
+                Select Currency
+
+            </option>
+
+            <option value="$">
+
+                🇺🇸 USD ($)
+
+            </option>
+
+            <option value="€">
+
+                🇪🇺 EUR (€)
+
+            </option>
+
+            <option value="£">
+
+                🇬🇧 GBP (£)
+
+            </option>
+
+            <option value="¥">
+
+                🇯🇵 JPY (¥)
+
+            </option>
+
+            <option value="C$">
+
+                🇨🇦 CAD (C$)
+
+            </option>
+
+            <option value="A$">
+
+                🇦🇺 AUD (A$)
+
+            </option>
+
+        </select>
+
+        <button
+            type="submit">
+
+            Create Account
+
+        </button>
+
+    </form>
+
+    <div
+        style="margin-top:55px;">
+
+        <h2
+            style="font-family:'Cormorant Garamond',serif; font-size:44px; margin-bottom:25px;">
+
+            My Accounts
+
+        </h2>
+
+        {% if accounts %}
+
+            {% for account in accounts %}
+
+                <a
+                    class="card"
+                    href="/account/{{ account.id }}">
+
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+
+                        <div>
+
+                            <h2>
+
+                                {{ account.name }}
+
+                            </h2>
+
+                            <p>
+
+                                Click to view categories
+
+                            </p>
+
+                        </div>
+
+                        <div
+                            style="text-align:right;">
+
+                            <h3>
+
+                                {{ account.currency }}
+                                {{ "%.2f"|format(account.total) }}
+
+                            </h3>
+
+                            <p>
+
+                                Total Balance
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="card">
+
+                <h3>
+
+                    Welcome to Budget Binder 👋
+
+                </h3>
+
+                <p
+                    style="margin-top:10px;">
+
+                    Create your first account to begin organizing your finances.
+
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
 
 {% endblock %}

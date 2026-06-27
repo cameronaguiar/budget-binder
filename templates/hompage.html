@@ -1,0 +1,566 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<header class="landing-header">
+
+    <div class="landing-logo">
+
+        <a href="/">
+            <span class="logo-light">BUDGET</span>
+            <span class="logo-dark">BINDER</span>
+        </a>
+
+    </div>
+
+    <nav class="landing-nav">
+
+        <a href="#about">About</a>
+
+        <a href="#how-it-works">How it Works</a>
+
+        <a href="#pricing">Pricing</a>
+
+    </nav>
+
+    <div class="landing-auth">
+
+        <a
+            class="login-link"
+            href="/login">
+
+            Log In
+
+        </a>
+
+        <div class="nav-divider"></div>
+
+        <a
+            class="signup-button"
+            href="/signup">
+
+            Sign Up
+
+        </a>
+
+    </div>
+
+</header>
+
+<main class="landing-page">
+
+<section class="hero-section">
+
+    <div class="hero-image-container">
+
+        <img
+            src="{{ url_for('static', filename='images/logowithbg.png') }}"
+            alt="Budget Binder"
+            class="hero-image">
+
+    </div>
+
+    <div class="hero-overlay">
+
+        <h1>
+
+            Plan Smarter.
+            <br>
+            Save More.
+            <br>
+            Live Better.
+
+        </h1>
+
+        <p>
+
+            Build budgets that actually work.
+
+            Track every dollar.
+
+            Reach your financial goals with confidence.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a
+                href="/signup"
+                class="primary-button">
+
+                Get Started
+
+            </a>
+
+            <a
+                href="/login"
+                class="secondary-button">
+
+                Log In
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section
+    id="about"
+    class="about-preview">
+
+    <div class="section-heading">
+
+        <h2>
+
+            Budgeting shouldn't be stressful.
+
+        </h2>
+
+        <p>
+
+            Budget Binder gives you one beautiful place to organize your finances,
+            track spending, and stay focused on your savings goals.
+
+        </p>
+
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+
+                💳
+
+            </div>
+
+            <h3>
+
+                Multiple Accounts
+
+            </h3>
+
+            <p>
+
+                Organize checking,
+                savings,
+                travel,
+                emergency funds,
+                business finances,
+                or anything else.
+
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+
+                📊
+
+            </div>
+
+            <h3>
+
+                Category Budgets
+
+            </h3>
+
+            <p>
+
+                Create personalized spending categories with custom starting balances
+                and track them in real time.
+
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+
+                📱
+
+            </div>
+
+            <h3>
+
+                Works Everywhere
+
+            </h3>
+
+            <p>
+
+                Designed for desktop,
+                tablet,
+                and mobile devices so your budget is always with you.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section
+    id="how-it-works"
+    class="how-section">
+
+    <div class="section-heading">
+
+        <h2>
+
+            How Budget Binder Works
+
+        </h2>
+
+        <p>
+
+            Getting started takes less than a minute.
+
+        </p>
+
+    </div>
+
+    <div class="steps-grid">
+
+        <div class="step-card">
+
+            <div class="step-number">
+
+                1
+
+            </div>
+
+            <h3>
+
+                Create Your Account
+
+            </h3>
+
+            <p>
+
+                Sign up securely using your email address to create your own private Budget Binder workspace.
+
+            </p>
+
+        </div>
+
+        <div class="step-card">
+
+            <div class="step-number">
+
+                2
+
+            </div>
+
+            <h3>
+
+                Build Budget Accounts
+
+            </h3>
+
+            <p>
+
+                Create separate accounts for checking, savings, vacations, emergencies, or any financial goal.
+
+            </p>
+
+        </div>
+
+        <div class="step-card">
+
+            <div class="step-number">
+
+                3
+
+            </div>
+
+            <h3>
+
+                Add Categories
+
+            </h3>
+
+            <p>
+
+                Organize your spending into categories like Food, Rent, Entertainment, Shopping, Utilities, and more.
+
+            </p>
+
+        </div>
+
+        <div class="step-card">
+
+            <div class="step-number">
+
+                4
+
+            </div>
+
+            <h3>
+
+                Track Every Transaction
+
+            </h3>
+
+            <p>
+
+                Record deposits and expenses while Budget Binder automatically updates your balances.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section
+    id="pricing"
+    class="pricing-section">
+
+    <div class="section-heading">
+
+        <h2>
+
+            Simple Pricing
+
+        </h2>
+
+        <p>
+
+            No complicated plans. No hidden fees.
+
+        </p>
+
+    </div>
+
+    <div class="pricing-wrapper">
+
+        <div class="pricing-card featured-plan">
+
+            <div class="plan-badge">
+
+                MOST POPULAR
+
+            </div>
+
+            <h3>
+
+                Free
+
+            </h3>
+
+            <div class="price">
+
+                $0
+
+            </div>
+
+            <p class="price-subtitle">
+
+                Forever
+
+            </p>
+
+            <ul class="pricing-list">
+
+                <li>✔ Unlimited Budget Accounts</li>
+
+                <li>✔ Unlimited Categories</li>
+
+                <li>✔ Unlimited Transactions</li>
+
+                <li>✔ Automatic Running Totals</li>
+
+                <li>✔ Secure Cloud Storage</li>
+
+                <li>✔ Mobile Friendly</li>
+
+            </ul>
+
+            <a
+                href="/signup"
+                class="pricing-button">
+
+                Create Free Account
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="cta-section">
+
+    <div class="cta-container">
+
+        <h2>
+
+            Ready to take control of your money?
+
+        </h2>
+
+        <p>
+
+            Join Budget Binder today and start building healthier financial habits.
+
+        </p>
+
+        <div class="cta-buttons">
+
+            <a
+                href="/signup"
+                class="primary-button">
+
+                Sign Up Free
+
+            </a>
+
+            <a
+                href="/login"
+                class="secondary-button">
+
+                Log In
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer class="landing-footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <h3>
+
+                <span class="logo-light">BUDGET</span>
+                <span class="logo-dark">BINDER</span>
+
+            </h3>
+
+            <p>
+
+                Beautiful budgeting made simple.
+
+                Helping people organize their finances with confidence,
+                clarity, and peace of mind.
+
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <div class="footer-column">
+
+                <h4>
+
+                    Product
+
+                </h4>
+
+                <a href="#about">
+
+                    About
+
+                </a>
+
+                <a href="#how-it-works">
+
+                    How it Works
+
+                </a>
+
+                <a href="#pricing">
+
+                    Pricing
+
+                </a>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h4>
+
+                    Account
+
+                </h4>
+
+                <a href="/login">
+
+                    Log In
+
+                </a>
+
+                <a href="/signup">
+
+                    Sign Up
+
+                </a>
+
+            </div>
+
+            <div class="footer-column">
+
+                <h4>
+
+                    Legal
+
+                </h4>
+
+                <a href="#">
+
+                    Privacy Policy
+
+                </a>
+
+                <a href="#">
+
+                    Terms of Service
+
+                </a>
+
+                <a href="#">
+
+                    Contact
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+        <p>
+
+            © {{ current_year if current_year is defined else 2026 }}
+            Budget Binder.
+            All Rights Reserved.
+
+        </p>
+
+    </div>
+
+</footer>
+
+</main>
+
+{% endblock %}
