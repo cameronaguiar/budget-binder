@@ -16,6 +16,10 @@ key = os.getenv("SUPABASE_KEY")
 
 supabase = create_client(url, key)
 
+@app.route("/")
+def home():
+    return redirect("/dashboard")
+
 # -----------------------------
 # Login Page
 # -----------------------------
