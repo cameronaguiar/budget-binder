@@ -157,6 +157,40 @@ def manage_accounts():
         "manage_accounts.html",
         accounts=accounts
     )
+
+# -----------------------------
+# Manage Categories
+# -----------------------------
+@app.route("/manage-categories/<int:account_id>")
+def manage_categories(account_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    # make sure account belongs to user (security check)
+    account = supabase.table("accounts") \
+        .select("*") \
+        .eq("id", account_id) \
+        .eq("user_id", user_id) \
+        .single() \
+        .execute().data
+
+    if not account:
+        return redirect("/dashboard")
+
+    categories = supabase.table("categories") \
+        .select("*") \
+        .eq("account_id", account_id) \
+        .execute().data
+
+    return render_template(
+        "manage_categories.html",
+        account=account,
+        categories=categories
+    )
+
 # -----------------------------
 # Create Account
 # -----------------------------
@@ -456,6 +490,102 @@ def rename_category(id):
 
     return redirect(f"/category/{id}")
 
+# -----------------------------
+# Edit Category
+# -----------------------------
+@app.route("/edit-category/<int:id>", methods=["GET", "POST"])
+def edit_category(id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    # fetch category safely + ensure ownership through account
+    category = supabase.table("categories") \
+        .select("*") \
+        .eq("id", id) \
+        .execute().data
+
+    if not category:
+        return redirect("/dashboard")
+
+    category = category[0]
+
+    account = supabase.table("accounts") \
+        .select("*") \
+        .eq("id", category["account_id"]) \
+        .eq("user_id", user_id) \
+        .single() \
+        .execute().data
+
+    if not account:
+        return redirect("/dashboard")
+
+    if request.method == "POST":
+
+        supabase.table("categories") \
+            .update({
+                "name": request.form["name"],
+                "starting_balance": float(request.form["starting_balance"])
+            }) \
+            .eq("id", id) \
+            .execute()
+
+        return redirect(f"/manage-categories/{account['id']}")
+
+    return render_template(
+        "edit_category.html",
+        category=category,
+        account=account
+    )
+
+# -----------------------------
+# Delete Category
+# -----------------------------
+@app.route("/delete-category/<int:id>", methods=["POST"])
+def delete_category(id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    # get category
+    category = supabase.table("categories") \
+        .select("*") \
+        .eq("id", id) \
+        .execute().data
+
+    if not category:
+        return redirect("/dashboard")
+
+    category = category[0]
+
+    # verify ownership via account
+    account = supabase.table("accounts") \
+        .select("*") \
+        .eq("id", category["account_id"]) \
+        .eq("user_id", user_id) \
+        .single() \
+        .execute().data
+
+    if not account:
+        return redirect("/dashboard")
+
+    # delete transactions first
+    supabase.table("transactions") \
+        .delete() \
+        .eq("category_id", id) \
+        .execute()
+
+    # delete category
+    supabase.table("categories") \
+        .delete() \
+        .eq("id", id) \
+        .execute()
+
+    return redirect(f"/manage-categories/{account['id']}")
 
 # -----------------------------
 # Run App
