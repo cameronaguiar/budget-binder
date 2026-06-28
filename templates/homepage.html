@@ -62,8 +62,8 @@
         </h2>
 
         <p class="section-subtitle">
-            Budget Binder gives you one beautiful place to organize your finances,
-            track spending, and stay focused on your savings goals.
+            Budget Binder helps with keeping your finances organized,
+            all in one place.
         </p>
 
         <div class="feature-grid">
@@ -153,24 +153,61 @@
 
     </section>
 
-    <!-- CTA -->
-    <section class="cta">
+    <!-- MY STORY -->
 
-        <div class="cta-box">
+<section id="story" class="story-section">
 
-            <h2>Ready to take control of your money?</h2>
+    <div class="story-container">
 
-            <p>
-                Join Budget Binder today and start building better financial habits.
-            </p>
+        <div class="story-photo">
 
-            <a href="/signup" class="hero-primary">
-                Sign Up Free
-            </a>
+            <img
+                src="{{ url_for('static', filename='images/Profile.JPEG') }}"
+                alt="Creator of Budget Binder">
 
         </div>
 
-    </section>
+        <div class="story-text">
+
+            <h2 class="section-title">
+                The Story Behind Budget Binder
+            </h2>
+
+            <p>
+
+                In September 2026, I moved from the United States to Spain to begin a new chapter of my life.
+
+                Living abroad meant learning how to budget differently, so I started carrying around a paper budget binder where I wrote down every purchase I made. Every coffee, grocery trip, metro ride, and bill was carefully recorded by hand so I could stay on track with my financial goals.
+
+            </p>
+
+            <p>
+
+                While it worked, I constantly wished there was a simple app that felt just like my notebook—but automatically calculated everything for me. I wanted something that was clean, organized, completely free, and easy enough that anyone could use it.
+
+            </p>
+
+            <p>
+
+                That idea became Budget Binder.
+
+                Every account total updates automatically as transactions are added, making it easy to see exactly where your money is going without doing any manual math. It's paper-free, eco-friendly, secure, and designed to make budgeting feel simple instead of stressful.
+
+            </p>
+
+            <p>
+
+                Building Budget Binder also became my opportunity to learn full-stack software development. This project challenged me to work across multiple programming languages, databases, cloud hosting, authentication, and responsive web design.
+
+                I'm excited to share it with anyone who wants a simple place to organize their finances, build better habits, and work toward their financial goals.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
     <!-- FOOTER -->
     <footer class="landing-footer">
@@ -183,7 +220,7 @@
                     <span class="logo-dark">BINDER</span>
                 </h3>
 
-                <p>Beautiful budgeting made simple.</p>
+                <p>Budgeting made simple.</p>
             </div>
 
             <div class="footer-links">
@@ -202,11 +239,12 @@
                 </div>
 
                 <div class="footer-column">
-                    <h4>Legal</h4>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms</a>
-                    <a href="#">Contact</a>
-                </div>
+                    <h4>Creator</h4>
+                    <a href="#story">My Story</a>
+                    <a href="https://github.com/cameronaguiar/budget-binder/">GitHub</a>
+                    <a href="mailto:cameronaguiar100@gmail.com">Contact</a>
+
+</div>
 
             </div>
 
