@@ -25,13 +25,8 @@
 
         <div class="nav-buttons">
 
-            <a class="login-link" href="/login">
-                Log In
-            </a>
-
-            <a class="signup-button" href="/signup">
-                Sign Up
-            </a>
+            <a class="login-link" href="/login">Log In</a>
+            <a class="signup-button" href="/signup">Sign Up</a>
 
         </div>
 
@@ -41,13 +36,16 @@
 
 <main class="landing-page">
 
-    <!-- HERO SECTION -->
-    <section class="hero">
+    <!-- HERO (FULL WIDTH MODERN VERSION) -->
+    <section class="hero-full">
 
-        <div class="hero-grid">
+        <div class="hero-bg">
 
-            <!-- TEXT -->
-            <div class="hero-text">
+            <img
+                src="{{ url_for('static', filename='images/logowithbg.png') }}"
+                alt="Budget Binder">
+
+            <div class="hero-overlay-text">
 
                 <h1>
                     Plan Smarter.<br>
@@ -55,31 +53,13 @@
                     Live Better.
                 </h1>
 
-                <p>
-                    Build budgets that actually work. Track every dollar.
-                    Reach your financial goals with confidence.
+                <p class="hero-quote">
+                    Budgeting made easy. Reach your financial goals with clarity and confidence.
                 </p>
 
-                <div class="hero-buttons">
-
-                    <a href="/signup" class="hero-primary">
-                        Get Started
-                    </a>
-
-                    <a href="/login" class="hero-secondary">
-                        Log In
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- IMAGE -->
-            <div class="hero-image">
-
-                <img
-                    src="{{ url_for('static', filename='images/logowithbg.png') }}"
-                    alt="Budget Binder">
+                <a href="/signup" class="hero-primary">
+                    Get Started
+                </a>
 
             </div>
 
@@ -110,13 +90,13 @@
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
                 <h3>Category Budgets</h3>
-                <p>Create personalized spending categories with starting balances and track them in real time.</p>
+                <p>Create personalized spending categories and track them in real time.</p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">📱</div>
                 <h3>Works Everywhere</h3>
-                <p>Designed for desktop, tablet, and mobile devices so your budget is always with you.</p>
+                <p>Desktop, tablet, and mobile friendly design.</p>
             </div>
 
         </div>
@@ -141,13 +121,13 @@
             <div class="step">
                 <div class="step-number">2</div>
                 <h3>Build Accounts</h3>
-                <p>Create checking, savings, or goal-based accounts.</p>
+                <p>Create financial accounts for your goals.</p>
             </div>
 
             <div class="step">
                 <div class="step-number">3</div>
                 <h3>Add Categories</h3>
-                <p>Organize spending into categories like food, rent, etc.</p>
+                <p>Organize spending into clear categories.</p>
             </div>
 
         </div>
@@ -159,16 +139,14 @@
 
         <h2 class="section-title">Simple Pricing</h2>
 
-        <p class="section-subtitle">No complicated plans. No hidden fees.</p>
+        <p class="section-subtitle">No hidden fees. Ever.</p>
 
         <div class="pricing-wrapper">
 
             <div class="pricing-card">
 
                 <h3>Free</h3>
-
                 <div class="price">$0</div>
-
                 <p class="price-description">Forever</p>
 
                 <ul class="pricing-list">
@@ -218,9 +196,7 @@
                     <span class="logo-dark">BINDER</span>
                 </h3>
 
-                <p>
-                    Beautiful budgeting made simple.
-                </p>
+                <p>Beautiful budgeting made simple.</p>
             </div>
 
             <div class="footer-links">
