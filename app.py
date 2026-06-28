@@ -52,10 +52,16 @@ def signup():
     try:
         supabase.auth.sign_up({
             "email": email,
-            "password": password
+            "password": password,
+            "options": {
+                "email_redirect_to": "https://budget-binder-cqf3.onrender.com/login"
+            }
         })
 
-        return redirect("/login")
+        return render_template(
+            "signup.html",
+            success="Check your email to verify your account before logging in."
+        )
 
     except Exception as e:
         return render_template("signup.html", error=str(e))
@@ -71,7 +77,11 @@ def forgot_password():
         email = request.form["email"]
 
         try:
-            supabase.auth.reset_password_for_email(email)
+            supabase.auth.reset_password_for_email(email,
+                {
+                    "redirect_to": "https://budget-binder-cqf3.onrender.com/reset-password"
+                }
+            )
 
             return render_template(
                 "forgot_password.html",
@@ -86,6 +96,30 @@ def forgot_password():
 
     return render_template("forgot_password.html")
 
+@app.route("/reset-password", methods=["GET", "POST"])
+def reset_password():
+
+    if request.method == "POST":
+
+        new_password = request.form["password"]
+
+        try:
+            supabase.auth.update_user({
+                "password": new_password
+            })
+
+            return render_template(
+                "login.html",
+                success="Password updated successfully. Please log in."
+            )
+
+        except Exception:
+            return render_template(
+                "reset_password.html",
+                error="Could not update password."
+            )
+
+    return render_template("reset_password.html")
 # -----------------------------
 # Login User
 # -----------------------------
@@ -100,6 +134,9 @@ def login():
             "email": email,
             "password": password
         })
+
+        if not result.user.email_confirmed_at:
+         return render_template("login.html", error="Please verify your email before logging in.")
 
         session["user_id"] = result.user.id
 
