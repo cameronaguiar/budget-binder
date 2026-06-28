@@ -280,29 +280,29 @@ def delete_account(id):
 
     user_id = session["user_id"]
 
+    # safer fetch (DO NOT use .single())
     account = supabase.table("accounts") \
         .select("*") \
         .eq("id", id) \
         .eq("user_id", user_id) \
-        .single() \
-        .execute()
+        .execute().data
 
-    if not account.data:
+    if not account:
         return redirect("/dashboard")
 
-    # Delete all transactions that belong to this account
+    # Delete transactions first
     supabase.table("transactions") \
         .delete() \
         .eq("account_id", id) \
         .execute()
 
-    # Delete all categories that belong to this account
+    # Delete categories
     supabase.table("categories") \
         .delete() \
         .eq("account_id", id) \
         .execute()
 
-    # Delete the account itself
+    # Delete account
     supabase.table("accounts") \
         .delete() \
         .eq("id", id) \

@@ -180,6 +180,27 @@
 
         {% endif %}
 
+        {% if categories %}
+
+<div
+    style="
+        text-align:center;
+        margin-top:35px;
+        margin-bottom:10px;
+    ">
+
+    <a
+        href="/manage-categories/{{ account.id }}"
+        class="secondary-button">
+
+        Manage Categories
+
+    </a>
+
+</div>
+
+{% endif %}
+
     </div>
 
 </div>

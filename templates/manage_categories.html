@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage Categories | Budget Binder
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <header class="app-header">
+
+        <div>
+
+            <a href="/account/{{ account.id }}" style="font-size:15px;">
+                ← Back to {{ account.name }}
+            </a>
+
+            <h1 class="page-title">
+                Manage Categories
+            </h1>
+
+            <p class="page-subtitle">
+                Edit or delete your budget categories.
+            </p>
+
+        </div>
+
+    </header>
+
+    {% if categories %}
+
+        {% for category in categories %}
+
+            <div class="card">
+
+                <div class="category-row">
+
+                    <div class="category-info">
+
+                        <h2>
+                            {{ category.name }}
+                        </h2>
+
+                        <p>
+                            Starting Balance:
+                            {{ account.currency }}
+                            {{ "%.2f"|format(category.starting_balance) }}
+                        </p>
+
+                    </div>
+
+                    <div class="action-buttons">
+
+                        <a
+                            href="/edit-category/{{ category.id }}"
+                            class="edit-button">
+
+                            Edit
+
+                        </a>
+
+                        <form
+                            action="/delete-category/{{ category.id }}"
+                            method="POST"
+                            onsubmit="return confirm('Delete this category? All transactions inside it will also be deleted.');">
+
+                            <button
+                                type="submit"
+                                class="danger-button">
+
+                                Delete
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="card">
+
+            <h3>
+                No Categories Found
+            </h3>
+
+            <p style="margin-top:10px;">
+                Create a category first before managing them.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

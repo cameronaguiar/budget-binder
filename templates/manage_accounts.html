@@ -22,12 +22,8 @@ Manage Accounts | Budget Binder
 
         </div>
 
-        <a
-            href="/dashboard"
-            class="logout-button">
-
+        <a href="/dashboard" class="secondary-button">
             ← Back to Dashboard
-
         </a>
 
     </header>
@@ -46,36 +42,27 @@ Manage Accounts | Budget Binder
 
                     <div>
 
-                        <h2>
-                            {{ account.name }}
-                        </h2>
+                        <h2>{{ account.name }}</h2>
 
-                        <p>
-                            {{ account.currency }}
-                        </p>
+                        <p>{{ account.currency }}</p>
 
                     </div>
 
-                    <div style="display:flex;
-                                gap:15px;
-                                flex-wrap:wrap;">
+                    <div class="action-buttons">
 
-                        <a
-                            href="/edit-account/{{ account.id }}"
-                            class="hero-secondary">
+                        <a href="/edit-account/{{ account.id }}"
+                           class="secondary-button small-btn">
 
                             ✏️ Edit
 
                         </a>
 
-                        <form
-                            action="/delete-account/{{ account.id }}"
-                            method="POST"
-                            onsubmit="return confirm('Delete this account and EVERYTHING inside it? This cannot be undone.');">
+                        <form action="/delete-account/{{ account.id }}"
+                              method="POST"
+                              onsubmit="return confirm('Delete this account and EVERYTHING inside it? This cannot be undone.');">
 
-                            <button
-                                type="submit"
-                                style="background:#b84040;">
+                            <button type="submit"
+                                    class="danger-button small-btn">
 
                                 🗑 Delete
 
@@ -95,13 +82,9 @@ Manage Accounts | Budget Binder
 
         <div class="card">
 
-            <h2>
-                No Accounts Yet
-            </h2>
+            <h2>No Accounts Yet</h2>
 
-            <p>
-                Create your first account before managing them.
-            </p>
+            <p>Create your first account before managing them.</p>
 
         </div>
 
