@@ -18,12 +18,6 @@ Dashboard | Budget Binder
 
             </h1>
 
-            <p class="page-subtitle">
-
-                Organize every account beautifully.
-
-            </p>
-
         </div>
 
         <a
@@ -171,7 +165,7 @@ Dashboard | Budget Binder
 
             {% endfor %}
 
-        {% else %}
+                {% else %}
 
             <div class="card">
 
@@ -181,14 +175,29 @@ Dashboard | Budget Binder
 
                 </h3>
 
-                <p
-                    style="margin-top:10px;">
+                <p style="margin-top:10px;">
 
                     Create your first account to begin organizing your finances.
 
                 </p>
 
             </div>
+
+        {% endif %}
+
+        {% if accounts %}
+
+        <div style="margin-top:35px; text-align:center;">
+
+            <a
+                href="/manage-accounts"
+                class="hero-secondary">
+
+                ✏️ Manage Accounts
+
+            </a>
+
+        </div>
 
         {% endif %}
 

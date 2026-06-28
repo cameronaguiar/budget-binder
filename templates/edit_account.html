@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Account | Budget Binder
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <header class="app-header">
+
+        <div>
+
+            <h1 class="page-title">
+                Edit Account
+            </h1>
+
+            <p class="page-subtitle">
+                Update your account name below.
+            </p>
+
+        </div>
+
+        <a
+            href="/manage-accounts"
+            class="logout-button">
+
+            ← Back
+
+        </a>
+
+    </header>
+
+    <form
+        action="/edit-account/{{ account.id }}"
+        method="POST">
+
+        <h2
+            style="margin-bottom:25px;
+                   font-family:'Cormorant Garamond',serif;
+                   font-size:38px;">
+
+            Rename Account
+
+        </h2>
+
+        <label>
+
+            Account Name
+
+        </label>
+
+        <input
+            type="text"
+            name="name"
+            value="{{ account.name }}"
+            required>
+
+        <label>
+
+            Currency
+
+        </label>
+
+        <select
+            name="currency"
+            required>
+
+            <option value="$"
+                {% if account.currency == "$" %}selected{% endif %}>
+                🇺🇸 USD ($)
+            </option>
+
+            <option value="€"
+                {% if account.currency == "€" %}selected{% endif %}>
+                🇪🇺 EUR (€)
+            </option>
+
+            <option value="£"
+                {% if account.currency == "£" %}selected{% endif %}>
+                🇬🇧 GBP (£)
+            </option>
+
+            <option value="¥"
+                {% if account.currency == "¥" %}selected{% endif %}>
+                🇯🇵 JPY (¥)
+            </option>
+
+            <option value="C$"
+                {% if account.currency == "C$" %}selected{% endif %}>
+                🇨🇦 CAD (C$)
+            </option>
+
+            <option value="A$"
+                {% if account.currency == "A$" %}selected{% endif %}>
+                🇦🇺 AUD (A$)
+            </option>
+
+        </select>
+
+        <div
+            style="display:flex;
+                   gap:18px;
+                   margin-top:25px;
+                   flex-wrap:wrap;">
+
+            <button
+                type="submit">
+
+                Save Changes
+
+            </button>
+
+            <a
+                href="/manage-accounts"
+                class="hero-secondary">
+
+                Cancel
+
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

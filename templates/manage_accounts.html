@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}
+Manage Accounts | Budget Binder
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <header class="app-header">
+
+        <div>
+
+            <h1 class="page-title">
+                Manage Accounts
+            </h1>
+
+            <p class="page-subtitle">
+                Rename or delete any of your budget accounts.
+            </p>
+
+        </div>
+
+        <a
+            href="/dashboard"
+            class="logout-button">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </header>
+
+    {% if accounts %}
+
+        {% for account in accounts %}
+
+            <div class="card">
+
+                <div style="display:flex;
+                            justify-content:space-between;
+                            align-items:center;
+                            gap:25px;
+                            flex-wrap:wrap;">
+
+                    <div>
+
+                        <h2>
+                            {{ account.name }}
+                        </h2>
+
+                        <p>
+                            {{ account.currency }}
+                        </p>
+
+                    </div>
+
+                    <div style="display:flex;
+                                gap:15px;
+                                flex-wrap:wrap;">
+
+                        <a
+                            href="/edit-account/{{ account.id }}"
+                            class="hero-secondary">
+
+                            ✏️ Edit
+
+                        </a>
+
+                        <form
+                            action="/delete-account/{{ account.id }}"
+                            method="POST"
+                            onsubmit="return confirm('Delete this account and EVERYTHING inside it? This cannot be undone.');">
+
+                            <button
+                                type="submit"
+                                style="background:#b84040;">
+
+                                🗑 Delete
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="card">
+
+            <h2>
+                No Accounts Yet
+            </h2>
+
+            <p>
+                Create your first account before managing them.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

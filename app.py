@@ -137,7 +137,26 @@ def dashboard():
         account["total"] = account_total
 
     return render_template("dashboard.html", accounts=accounts)
+# -----------------------------
+# Manage Accounts
+# -----------------------------
+@app.route("/manage-accounts")
+def manage_accounts():
 
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    accounts = supabase.table("accounts") \
+        .select("*") \
+        .eq("user_id", user_id) \
+        .execute().data
+
+    return render_template(
+        "manage_accounts.html",
+        accounts=accounts
+    )
 # -----------------------------
 # Create Account
 # -----------------------------
@@ -208,6 +227,89 @@ def account(id):
         total=account_total
     )
 
+# -----------------------------
+# Edit Account
+# -----------------------------
+@app.route("/edit-account/<int:id>", methods=["GET", "POST"])
+def edit_account(id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    try:
+
+        account = supabase.table("accounts") \
+            .select("*") \
+            .eq("id", id) \
+            .eq("user_id", user_id) \
+            .single() \
+            .execute().data
+
+    except Exception:
+        return redirect("/dashboard")
+
+    if request.method == "POST":
+
+        supabase.table("accounts") \
+            .update({
+                "name": request.form["name"],
+                "currency": request.form["currency"]
+            }) \
+            .eq("id", id) \
+            .eq("user_id", user_id) \
+            .execute()
+
+        return redirect("/manage-accounts")
+
+    return render_template(
+        "edit_account.html",
+        account=account
+    )
+
+
+# -----------------------------
+# Delete Account
+# -----------------------------
+@app.route("/delete-account/<int:id>", methods=["POST"])
+def delete_account(id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    account = supabase.table("accounts") \
+        .select("*") \
+        .eq("id", id) \
+        .eq("user_id", user_id) \
+        .single() \
+        .execute()
+
+    if not account.data:
+        return redirect("/dashboard")
+
+    # Delete all transactions that belong to this account
+    supabase.table("transactions") \
+        .delete() \
+        .eq("account_id", id) \
+        .execute()
+
+    # Delete all categories that belong to this account
+    supabase.table("categories") \
+        .delete() \
+        .eq("account_id", id) \
+        .execute()
+
+    # Delete the account itself
+    supabase.table("accounts") \
+        .delete() \
+        .eq("id", id) \
+        .eq("user_id", user_id) \
+        .execute()
+
+    return redirect("/manage-accounts")
 
 # -----------------------------
 # Add Category
