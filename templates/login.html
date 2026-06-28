@@ -45,37 +45,19 @@ Log In | Budget Binder
 
     <div class="auth-card">
 
-        <h1>
+        <h1>Welcome Back</h1>
 
-            Welcome Back
-
-        </h1>
-
-        <p>
-
-            Log in to continue managing your finances.
-
-        </p>
+        <p>Log in to continue managing your finances.</p>
 
         {% if error %}
-
         <div class="error-box">
-
             {{ error }}
-
         </div>
-
         {% endif %}
 
-        <form
-            action="/login"
-            method="POST">
+        <form action="/login" method="POST">
 
-            <label>
-
-                Email
-
-            </label>
+            <label>Email</label>
 
             <input
                 type="email"
@@ -83,11 +65,7 @@ Log In | Budget Binder
                 placeholder="you@example.com"
                 required>
 
-            <label>
-
-                Password
-
-            </label>
+            <label>Password</label>
 
             <input
                 type="password"
@@ -95,12 +73,17 @@ Log In | Budget Binder
                 placeholder="••••••••"
                 required>
 
-            <button
-                type="submit"
-                class="primary-button">
+            <!-- FORGOT PASSWORD (clean placement under password field) -->
+            <div class="forgot-password-wrapper">
 
+                <a href="/forgot-password" class="forgot-password-link">
+                    Forgot password?
+                </a>
+
+            </div>
+
+            <button type="submit" class="primary-button">
                 Log In
-
             </button>
 
         </form>
@@ -108,12 +91,7 @@ Log In | Budget Binder
         <div class="auth-footer">
 
             Don't have an account?
-
-            <a href="/signup">
-
-                Create one
-
-            </a>
+            <a href="/signup">Create one</a>
 
         </div>
 

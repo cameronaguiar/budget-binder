@@ -60,6 +60,31 @@ def signup():
     except Exception as e:
         return render_template("signup.html", error=str(e))
 
+# -----------------------------
+# Forgot Password (Send Email)
+# -----------------------------
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+
+        try:
+            supabase.auth.reset_password_for_email(email)
+
+            return render_template(
+                "forgot_password.html",
+                success="Password reset email sent. Check your inbox."
+            )
+
+        except Exception as e:
+            return render_template(
+                "forgot_password.html",
+                error="Could not send reset email."
+            )
+
+    return render_template("forgot_password.html")
 
 # -----------------------------
 # Login User

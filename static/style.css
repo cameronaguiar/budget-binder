@@ -1796,3 +1796,22 @@ font-weight:600;
     background: none;
     box-shadow: none;
 }
+
+.forgot-password-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+    margin-bottom: 18px;
+}
+
+.forgot-password-link {
+    font-size: 13px;
+    color: #777;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.forgot-password-link:hover {
+    color: #000;
+    text-decoration: underline;
+}
