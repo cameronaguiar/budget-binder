@@ -71,9 +71,13 @@
         </h2>
 
         <input
-            type="date"
-            name="date"
-            required>
+           type="text"
+           onfocus="this.type='date'"
+           onblur="if(!this.value)this.type='text'"
+           placeholder="Date"
+           class="date-input"
+           name="date"
+           required>
 
         <input
             type="text"
